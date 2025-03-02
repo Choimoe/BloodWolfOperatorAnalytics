@@ -17,9 +17,12 @@ plt.rcParams['axes.unicode_minus'] = False
 
 os.makedirs("fig", exist_ok=True)
 
-df = pd.read_excel("hist.xlsx")
+df = pd.read_csv("hist.csv", encoding='gb2312')
 periods = df.columns[1:].tolist()
-clean_periods = [col.split(")")[0].replace("(", "\n") for col in periods]
+clean_periods = []
+for col in periods:
+    clean = col.replace('"', '').split(')')[0].replace('(', '\n')
+    clean_periods.append(clean)
 
 all_operators = df.iloc[:, 1:].stack().dropna().unique()
 full_index = pd.MultiIndex.from_product(
